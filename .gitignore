@@ -2,6 +2,7 @@
 /data/
 *.jar
 /docs/
+/widoco/
 
 .ruff_cache/
 .DS_Store

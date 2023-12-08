@@ -1906,7 +1906,7 @@ omop:value_as_number a owl:DatatypeProperty,
 If there is a negative value coming from the source, set the VALUE_AS_NUMBER to NULL, with the exception of the following Measurements (listed as LOINC codes):<br>-  [1925-7](https://athena.ohdsi.org/search-terms/terms/3003396) Base excess in Arterial blood by calculation - [1927-3](https://athena.ohdsi.org/search-terms/terms/3002032) Base excess in Venous blood by calculation - [8632-2](https://athena.ohdsi.org/search-terms/terms/3006277) QRS-Axis - [11555-0](https://athena.ohdsi.org/search-terms/terms/3012501) Base excess in Blood by calculation - [1926-5](https://athena.ohdsi.org/search-terms/terms/3003129) Base excess in Capillary blood by calculation - [28638-5](https://athena.ohdsi.org/search-terms/terms/3004959) Base excess in Arterial cord blood by calculation [28639-3](https://athena.ohdsi.org/search-terms/terms/3007435) Base excess in Venous cord blood by calculation"""@en,
         "For a Observation: This is the numerical value of the Result of the Observation, if applicable and available. It is not expected that all Observations will have numeric results, rather, this field is here to house values should they exist."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Observation omop:Measurement ) ] ;
+            owl:unionOf ( omop:Measurement omop:Observation ) ] ;
     rdfs:range xsd:decimal ;
     omop:omop_cdm_name "measurement.value_as_number#137 AS float"^^xsd:string,
         "observation.value_as_number#155 AS float"^^xsd:string .
@@ -1977,7 +1977,7 @@ omop:admitted_from_source_value a owl:DatatypeProperty,
 If available, map the admitted_from_source_value to a standard concept in the visit domain. If not available, map to 0. [Accepted Concepts](https://athena.ohdsi.org/search-terms/terms?domain=Visit&standardConcept=Standard&page=1&pageSize=15&query=)."""@en,
         "For a Visit Occurrence: This information may be called something different in the source data but the field is meant to contain a value indicating where a person was admitted from. Typically this applies only to visits that have a length of stay, like inpatient visits or long-term care visits."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:VisitDetail omop:VisitOccurrence ) ] ;
+            owl:unionOf ( omop:VisitOccurrence omop:VisitDetail ) ] ;
     omop:omop_cdm_name "visit_detail.admitted_from_source_value#55 AS int"^^xsd:string,
         "visit_occurrence.admitted_from_source_value#38 AS str"^^xsd:string .
 
@@ -1989,7 +1989,7 @@ omop:has_admitted_from a owl:FunctionalProperty,
         """For a Visit Occurrence: Use this field to determine where the patient was admitted from. This concept is part of the visit domain and can indicate if a patient was admitted to the hospital from a long-term care facility, for example.
 If available, map the admitted_from_source_value to a standard concept in the visit domain. If not available set to 0."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:VisitDetail omop:VisitOccurrence ) ] ;
+            owl:unionOf ( omop:VisitOccurrence omop:VisitDetail ) ] ;
     rdfs:range omop:Concept ;
     omop:omop_cdm_name "visit_detail.admitted_from_concept_id#54 AS Concept"^^xsd:string,
         "visit_occurrence.admitted_from_concept_id#37 AS Concept"^^xsd:string .
@@ -2003,7 +2003,7 @@ Same rules apply as for the VISIT_OCCURRENCE_ID."""@en,
         """reversed relation, For a Condition Occurrence: The visit during which the condition occurred.
 Depending on the structure of the source data, this may have to be determined based on dates. If a CONDITION_START_DATE occurs within the start and end date of a Visit it is a valid ETL choice to choose the VISIT_OCCURRENCE_ID from the Visit that subsumes it, even if not explicitly stated in the data. While not required, an attempt should be made to locate the VISIT_OCCURRENCE_ID of the CONDITION_OCCURRENCE record."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Person ) ] ;
+            owl:unionOf ( omop:Person omop:BaseVisit ) ] ;
     rdfs:range omop:ConditionOccurrence ;
     omop:omop_cdm_name "condition_occurrence.person_id#62 AS Person"^^xsd:string,
         "condition_occurrence.visit_detail_id#73 AS VisitDetail"^^xsd:string,
@@ -2017,7 +2017,7 @@ To populate this field device exposures must be explicitly initiated in the visi
         """reversed relation, For a Device Exposure: The Visit during which the device was prescribed or given.
 To populate this field device exposures must be explicitly initiated in the visit."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Person ) ] ;
+            owl:unionOf ( omop:Person omop:BaseVisit ) ] ;
     rdfs:range omop:DeviceExposure ;
     omop:omop_cdm_name "device_exposure.person_id#115 AS Person"^^xsd:string,
         "device_exposure.visit_detail_id#126 AS VisitDetail"^^xsd:string,
@@ -2032,7 +2032,7 @@ Same rules apply as for the VISIT_OCCURRENCE_ID."""@en,
         """reversed relation, For a Drug Exposure: The Visit during which the drug was prescribed, administered or dispensed.
 To populate this field drug exposures must be explicitly initiated in the visit."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Person ) ] ;
+            owl:unionOf ( omop:Person omop:BaseVisit ) ] ;
     rdfs:range omop:DrugExposure ;
     omop:omop_cdm_name "drug_exposure.person_id#78 AS Person"^^xsd:string,
         "drug_exposure.visit_detail_id#95 AS VisitDetail"^^xsd:string,
@@ -2045,7 +2045,7 @@ omop:has_event_field a owl:FunctionalProperty,
     rdfs:comment """For a Cost: If the Cost record is related to another record in the database, this field is the CONCEPT_ID that identifies which table the primary key of the linked record came from.
 Put the CONCEPT_ID that identifies which table and field the COST_EVENT_ID came from."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Note omop:Cost ) ] ;
+            owl:unionOf ( omop:Cost omop:Note ) ] ;
     rdfs:range omop:Concept ;
     omop:omop_cdm_name "cost.cost_event_field_concept_id#310 AS Concept"^^xsd:string,
         "note.note_event_field_concept_id#180 AS Concept"^^xsd:string .
@@ -2059,7 +2059,7 @@ Same rules apply as for the VISIT_OCCURRENCE_ID."""@en,
         """reversed relation, For a Measurement: The visit during which the Measurement occurred.
 Depending on the structure of the source data, this may have to be determined based on dates. If a MEASUREMENT_DATE occurs within the start and end date of a Visit it is a valid ETL choice to choose the VISIT_OCCURRENCE_ID from the visit that subsumes it, even if not explicitly stated in the data. While not required, an attempt should be made to locate the VISIT_OCCURRENCE_ID of the measurement record. If a measurement is related to a visit explicitly in the source data, it is possible that the result date of the Measurement falls outside of the bounds of the Visit dates."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Person ) ] ;
+            owl:unionOf ( omop:Person omop:BaseVisit ) ] ;
     rdfs:range omop:Measurement ;
     omop:omop_cdm_name "measurement.person_id#130 AS Person"^^xsd:string,
         "measurement.visit_detail_id#144 AS VisitDetail"^^xsd:string,
@@ -2071,7 +2071,7 @@ omop:has_note a owl:ObjectProperty ;
     rdfs:comment "reversed relation, For a Note: The Visit Detail during which the note was written."@en,
         "reversed relation, For a Note: The Visit during which the note was written."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Person ) ] ;
+            owl:unionOf ( omop:Person omop:BaseVisit ) ] ;
     rdfs:range omop:Note ;
     omop:omop_cdm_name "note.person_id#178 AS Person"^^xsd:string,
         "note.visit_detail_id#191 AS VisitDetail"^^xsd:string,
@@ -2086,7 +2086,7 @@ Same rules apply as for the VISIT_OCCURRENCE_ID."""@en,
         """reversed relation, For a Observation: The visit during which the Observation occurred.
 Depending on the structure of the source data, this may have to be determined based on dates. If an OBSERVATION_DATE occurs within the start and end date of a Visit it is a valid ETL choice to choose the VISIT_OCCURRENCE_ID from the visit that subsumes it, even if not explicitly stated in the data. While not required, an attempt should be made to locate the VISIT_OCCURRENCE_ID of the observation record. If an observation is related to a visit explicitly in the source data, it is possible that the result date of the Observation falls outside of the bounds of the Visit dates."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Person ) ] ;
+            owl:unionOf ( omop:Person omop:BaseVisit ) ] ;
     rdfs:range omop:Observation ;
     omop:omop_cdm_name "observation.person_id#150 AS Person"^^xsd:string,
         "observation.visit_detail_id#162 AS VisitDetail"^^xsd:string,
@@ -2114,7 +2114,7 @@ Same rules apply as for the VISIT_OCCURRENCE_ID."""@en,
         """reversed relation, For a Procedure Occurrence: The visit during which the procedure occurred.
 Depending on the structure of the source data, this may have to be determined based on dates. If a PROCEDURE_DATE occurs within the start and end date of a Visit it is a valid ETL choice to choose the VISIT_OCCURRENCE_ID from the Visit that subsumes it, even if not explicitly stated in the data. While not required, an attempt should be made to locate the VISIT_OCCURRENCE_ID of the PROCEDURE_OCCURRENCE record."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Person ) ] ;
+            owl:unionOf ( omop:Person omop:BaseVisit ) ] ;
     rdfs:range omop:ProcedureOccurrence ;
     omop:omop_cdm_name "procedure_occurrence.person_id#101 AS Person"^^xsd:string,
         "procedure_occurrence.visit_detail_id#110 AS VisitDetail"^^xsd:string,
@@ -2125,7 +2125,7 @@ omop:has_survey_conduct a owl:ObjectProperty ;
     owlready:python_name "survey_conducts"^^xsd:string ;
     rdfs:comment "reversed relation, For a Survey Conduct: The Visit during which the Survey occurred."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Person omop:VisitOccurrence ) ] ;
+            owl:unionOf ( omop:VisitOccurrence omop:Person ) ] ;
     rdfs:range omop:SurveyConduct ;
     omop:omop_cdm_name "survey_conduct.person_id#228 AS Person"^^xsd:string,
         "survey_conduct.visit_occurrence_id#249 AS VisitOccurrence"^^xsd:string .
@@ -2139,7 +2139,7 @@ If the raw data provides categorial results as well as continuous results for me
         """For a Observation: It is possible that some records destined for the Observation table have two clinical ideas represented in one source code. This is common with ICD10 codes that describe a family history of some Condition, for example. In OMOP the Vocabulary breaks these two clinical ideas into two codes; one becomes the OBSERVATION_CONCEPT_ID and the other becomes the VALUE_AS_CONCEPT_ID. It is important when using the Observation table to keep this possibility in mind and to examine the VALUE_AS_CONCEPT_ID field for relevant information.
 Note that the value of VALUE_AS_CONCEPT_ID may be provided through mapping from a source Concept which contains the content of the Observation. In those situations, the CONCEPT_RELATIONSHIP table in addition to the 'Maps to' record contains a second record with the relationship_id set to 'Maps to value'. For example, ICD10 [Z82.4](https://athena.ohdsi.org/search-terms/terms/45581076) 'Family history of ischaemic heart disease and other diseases of the circulatory system' has a 'Maps to' relationship to [4167217](https://athena.ohdsi.org/search-terms/terms/4167217) 'Family history of clinical finding' as well as a 'Maps to value' record to [134057](https://athena.ohdsi.org/search-terms/terms/134057) 'Disorder of cardiovascular system'."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Observation omop:Metadata omop:Measurement ) ] ;
+            owl:unionOf ( omop:Measurement omop:Observation omop:Metadata ) ] ;
     rdfs:range omop:Concept ;
     omop:omop_cdm_name "measurement.value_as_concept_id#138 AS Concept"^^xsd:string,
         "metadata.value_as_concept_id#349 AS Concept"^^xsd:string,
@@ -2154,7 +2154,7 @@ This code is mapped to a Standard Condition Concept in the Standardized Vocabula
 This code is mapped to a Standard Condition Concept in the Standardized Vocabularies and the original code is stored here for reference."""@en,
         "For a Specimen: This unit for the quantity of the specimen, as represented in the source."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Observation omop:Specimen omop:Measurement ) ] ;
+            owl:unionOf ( omop:Measurement omop:Observation omop:Specimen ) ] ;
     rdfs:range xsd:string ;
     omop:omop_cdm_name "measurement.unit_source_value#147 AS str"^^xsd:string,
         "observation.unit_source_value#165 AS str"^^xsd:string,
@@ -2306,7 +2306,7 @@ Concept. Examples are 'Clinical Drug',
 Document Type Vocabulary classification of the note.
 Map the note classification to a Standard Concept. For more information see the ETL Conventions in the description of the NOTE table. [AcceptedConcepts](https://athena.ohdsi.org/search-terms/terms?standardConcept=Standard&conceptClass=Doc+Kind&conceptClass=Doc+Role&conceptClass=Doc+Setting&conceptClass=Doc+Subject+Matter&conceptClass=Doc+Type+of+Service&domain=Meas+Value&page=1&pageSize=15&query=). This Concept can alternatively be represented by concepts with the relationship 'Kind of (LOINC)' to [706391](https://athena.ohdsi.org/search-terms/terms/706391) (Note)."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Note omop:Concept ) ] ;
+            owl:unionOf ( omop:Concept omop:Note ) ] ;
     omop:omop_cdm_name "concept.concept_class_id#366 AS ConceptClass"^^xsd:string,
         "note.note_class_concept_id#184 AS Concept"^^xsd:string .
 
@@ -2317,7 +2317,7 @@ omop:has_domain a owl:FunctionalProperty,
     rdfs:comment "For a Concept: A foreign key to the [DOMAIN](https://ohdsi.github.io/CommonDataModel/cdm531.html#domain) table the Concept belongs to."@en,
         "For a Location History: The domain of the entity that is related to the location. Either PERSON, PROVIDER, or CARE_SITE."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:LocationHistory omop:Concept ) ] ;
+            owl:unionOf ( omop:Concept omop:LocationHistory ) ] ;
     rdfs:range omop:Domain ;
     omop:omop_cdm_name "concept.domain_id#364 AS Domain"^^xsd:string,
         "location_history.domain_id#263 AS Domain"^^xsd:string .
@@ -2331,7 +2331,7 @@ Put the primary key of the linked record, if applicable, here."""@en,
         """For a Observation: If the Observation record is related to another record in the database, this field is the primary key of the linked record.
 Put the primary key of the linked record, if applicable, here. See the [ETL Conventions for the OBSERVATION](https://ohdsi.github.io/CommonDataModel/cdm60.html#observation) table for more details."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Observation omop:Note omop:Cost ) ] ;
+            owl:unionOf ( omop:Observation omop:Cost omop:Note ) ] ;
     omop:omop_cdm_name "cost.cost_event_id#309 AS Thing"^^xsd:string,
         "note.note_event_id#179 AS Thing"^^xsd:string,
         "observation.observation_event_id#167 AS Thing"^^xsd:string .
@@ -2357,7 +2357,7 @@ omop:has_location a owl:FunctionalProperty,
         """For a Person: The location refers to the physical address of the person. This field should capture the last known location of the person.  Any prior locations are captured in the [LOCATION_HISTORY](https://ohdsi.github.io/CommonDataModel/cdm60.html#location_history) table.
 Put the location_id from the LOCATION table here that represents the most granular location information for the person. This could represent anything from postal code or parts thereof, state, or county for example. Since many databases contain deidentified data, it is common that the precision of the location is reduced to prevent re-identification. This field should capture the last known location. Any prior locations are captured in the [LOCATION_HISTORY](https://ohdsi.github.io/CommonDataModel/cdm60.html#location_history) table."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:LocationHistory omop:Person omop:CareSite ) ] ;
+            owl:unionOf ( omop:CareSite omop:Person omop:LocationHistory ) ] ;
     rdfs:range omop:Location ;
     omop:omop_cdm_name "care_site.location_id#270 AS Location"^^xsd:string,
         "location_history.location_id#261 AS Location"^^xsd:string,
@@ -2369,7 +2369,7 @@ omop:has_relationship a owl:FunctionalProperty,
     owlready:python_name "relationship"^^xsd:string ;
     rdfs:comment "For a Concept Relationship: The relationship between CONCEPT_ID_1 and CONCEPT_ID_2. Please see the [Vocabulary Conventions](https://ohdsi.github.io/CommonDataModel/dataModelConventions.html#concept_relationships). for more information."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:FactRelationship omop:ConceptRelationship ) ] ;
+            owl:unionOf ( omop:ConceptRelationship omop:FactRelationship ) ] ;
     omop:omop_cdm_name "concept_relationship.relationship_id#385 AS Relationship"^^xsd:string,
         "fact_relationship.relationship_concept_id#226 AS Concept"^^xsd:string .
 
@@ -2389,7 +2389,7 @@ omop:has_visit_detail a owl:ObjectProperty ;
     rdfs:comment """reversed relation, For a Visit Detail: Use this field to link the VISIT_DETAIL record to its VISIT_OCCURRENCE.
 Put the VISIT_OCCURRENCE_ID that subsumes the VISIT_DETAIL record here."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Person omop:VisitOccurrence ) ] ;
+            owl:unionOf ( omop:VisitOccurrence omop:Person ) ] ;
     rdfs:range omop:VisitDetail ;
     omop:omop_cdm_name "visit_detail.person_id#43 AS Person"^^xsd:string,
         "visit_detail.visit_occurrence_id#60 AS VisitOccurrence"^^xsd:string .
@@ -2410,7 +2410,7 @@ update) or NULL when
 valid_end_date has the default
 value."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:SourceToConceptMap omop:DrugStrength omop:ConceptRelationship omop:Concept ) ] ;
+            owl:unionOf ( omop:ConceptRelationship omop:SourceToConceptMap omop:Concept omop:DrugStrength ) ] ;
     rdfs:range xsd:string ;
     omop:omop_cdm_name "concept.invalid_reason#371 AS str"^^xsd:string,
         "concept_relationship.invalid_reason#388 AS str"^^xsd:string,
@@ -2427,7 +2427,7 @@ Quantified clinical drugs with divisible dose forms (prefilled syringes), the qu
 If a Procedure has a quantity of '0' in the source, this should default to '1' in the ETL. If there is a record in the source it can be assumed the exposure occurred at least once"""@en,
         "For a Specimen: The amount of specimen collected from the person."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:DeviceExposure omop:DrugExposure omop:ProcedureOccurrence omop:Specimen ) ] ;
+            owl:unionOf ( omop:DeviceExposure omop:DrugExposure omop:Specimen omop:ProcedureOccurrence ) ] ;
     omop:omop_cdm_name "device_exposure.quantity#123 AS int"^^xsd:string,
         "drug_exposure.quantity#88 AS float"^^xsd:string,
         "procedure_occurrence.quantity#107 AS int"^^xsd:string,
@@ -2527,7 +2527,7 @@ There is no standardization requirement for units associated with OBSERVATION_CO
         """For a Specimen: The unit for the quantity of the specimen.
 Map the UNIT_SOURCE_VALUE to a Standard Concept in the Unit domain. [Accepted Concepts](https://athena.ohdsi.org/search-terms/terms?domain=Unit&standardConcept=Standard&page=1&pageSize=15&query=)"""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Observation omop:DoseEra omop:Specimen omop:Measurement ) ] ;
+            owl:unionOf ( omop:Measurement omop:Observation omop:Specimen omop:DoseEra ) ] ;
     rdfs:range omop:Concept ;
     omop:omop_cdm_name "dose_era.unit_concept_id#335 AS Concept"^^xsd:string,
         "measurement.unit_concept_id#139 AS Concept"^^xsd:string,
@@ -2746,7 +2746,7 @@ was deleted or superseded
 (updated) by a new relationship.
 Default value is 31-Dec-2099."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:SourceToConceptMap omop:DrugStrength omop:ConceptRelationship omop:Concept ) ] ;
+            owl:unionOf ( omop:ConceptRelationship omop:SourceToConceptMap omop:Concept omop:DrugStrength ) ] ;
     rdfs:range xsd:date ;
     omop:omop_cdm_name "concept.valid_end_date#370 AS date"^^xsd:string,
         "concept_relationship.valid_end_date#387 AS date"^^xsd:string,
@@ -2767,7 +2767,7 @@ recorded. The default value is
         """For a Source To Concept Map: The date when the mapping
 instance was first recorded."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:SourceToConceptMap omop:DrugStrength omop:ConceptRelationship omop:Concept ) ] ;
+            owl:unionOf ( omop:ConceptRelationship omop:SourceToConceptMap omop:Concept omop:DrugStrength ) ] ;
     rdfs:range xsd:date ;
     omop:omop_cdm_name "concept.valid_start_date#369 AS date"^^xsd:string,
         "concept_relationship.valid_start_date#386 AS date"^^xsd:string,
@@ -2896,7 +2896,7 @@ The additional providers associated to a Visit can be stored in this table where
         """For a Visit Occurrence: There will only be one provider per visit record and the ETL document should clearly state how they were chosen (attending, admitting, etc.). If there are multiple providers associated with a visit in the source, this can be reflected in the event tables (CONDITION_OCCURRENCE, PROCEDURE_OCCURRENCE, etc.) or in the VISIT_DETAIL table.
 If there are multiple providers associated with a visit, you will need to choose which one to put here. The additional providers can be stored in the visit_detail table."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Exposure omop:Person omop:ConditionOccurrence omop:SurveyConduct omop:ProcedureOccurrence omop:Note omop:Measurement omop:Observation ) ] ;
+            owl:unionOf ( omop:Person omop:ProcedureOccurrence omop:BaseVisit omop:Exposure omop:Observation omop:ConditionOccurrence omop:Note omop:SurveyConduct omop:Measurement ) ] ;
     rdfs:range omop:Provider ;
     omop:omop_cdm_name "condition_occurrence.provider_id#71 AS Provider"^^xsd:string,
         "device_exposure.provider_id#124 AS Provider"^^xsd:string,
@@ -3220,7 +3220,7 @@ If there is information about the kind of visit detail in the source data that v
         """For a Visit Occurrence: This field houses the verbatim value from the source data representing the kind of visit that took place (inpatient, outpatient, emergency, etc.)
 If there is information about the kind of visit in the source data that value should be stored here. If a visit is an amalgamation of visits from the source then use a hierarchy to choose the visit source value, such as IP -> ER-> OP. This should line up with the logic chosen to determine how visits are created."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BasePerson omop:BaseVisit omop:Exposure omop:ConditionOccurrence omop:CareSite omop:ProcedureOccurrence omop:Note omop:Location omop:Measurement omop:Observation omop:Cost omop:Specimen ) ] ;
+            owl:unionOf ( omop:ProcedureOccurrence omop:BaseVisit omop:Exposure omop:Observation omop:BasePerson omop:Location omop:ConditionOccurrence omop:Note omop:Cost omop:Specimen omop:CareSite omop:Measurement ) ] ;
     rdfs:range xsd:string ;
     omop:omop_cdm_name "care_site.care_site_source_value#271 AS str"^^xsd:string,
         "condition_occurrence.condition_source_value#74 AS str"^^xsd:string,
@@ -3618,7 +3618,7 @@ This is either 0 or should be a number above 2 billion, which are the Concepts r
         "For a Visit Detail: If the VISIT_DETAIL_SOURCE_VALUE is coded in the source data using an OMOP supported vocabulary put the concept id representing the source value here. If not available, map to 0."@en,
         "For a Visit Occurrence: If the visit source value is coded in the source data using an OMOP supported vocabulary put the concept id representing the source value here. If not available set to 0."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:Exposure omop:ConditionOccurrence omop:ProcedureOccurrence omop:NoteNlp omop:Cost omop:Measurement omop:Observation omop:Specimen omop:SourceToConceptMap ) ] ;
+            owl:unionOf ( omop:ProcedureOccurrence omop:BaseVisit omop:Exposure omop:Observation omop:Cost omop:ConditionOccurrence omop:NoteNlp omop:Specimen omop:SourceToConceptMap omop:Measurement ) ] ;
     omop:omop_cdm_name "condition_occurrence.condition_source_concept_id#75 AS Concept"^^xsd:string,
         "cost.cost_source_concept_id#313 AS Concept"^^xsd:string,
         "device_exposure.device_source_concept_id#128 AS Concept"^^xsd:string,
@@ -3864,7 +3864,7 @@ Populate this field based on the provenance of the visit detail record, as in wh
         """For a Visit Occurrence: Use this field to understand the provenance of the visit record, or where the record comes from.
 Populate this field based on the provenance of the visit record, as in whether it came from an EHR record or billing claim."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:Death omop:BaseVisit omop:Exposure omop:Metadata omop:ConditionOccurrence omop:ProcedureOccurrence omop:Note omop:Cost omop:Measurement omop:Observation omop:Specimen ) ] ;
+            owl:unionOf ( omop:ProcedureOccurrence omop:Metadata omop:BaseVisit omop:Observation omop:Cost omop:Exposure omop:ConditionOccurrence omop:Note omop:Specimen omop:Death omop:Measurement ) ] ;
     rdfs:range omop:Concept ;
     omop:omop_cdm_name "condition_occurrence.condition_type_concept_id#68 AS Concept"^^xsd:string,
         "cost.cost_type_concept_id#312 AS Concept"^^xsd:string,
@@ -3898,7 +3898,7 @@ example International Classification of
 Diseases, Ninth Revision, Clinical
 Modification, Volume 1 and 2 (NCHS) etc."""@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:CdmSource omop:Metadata omop:CareSite omop:Provider omop:CohortDefinition omop:Vocabulary omop:Domain omop:ConceptSynonym omop:Relationship omop:Concept omop:ConceptClass ) ] ;
+            owl:unionOf ( omop:Concept omop:Metadata omop:Vocabulary omop:CohortDefinition omop:Provider omop:Relationship omop:Domain omop:CareSite omop:ConceptClass omop:CdmSource omop:ConceptSynonym ) ] ;
     rdfs:range xsd:string ;
     omop:omop_cdm_name "care_site.care_site_name#268 AS str"^^xsd:string,
         "cdm_source.cdm_source_name#352 AS str"^^xsd:string,
@@ -4049,7 +4049,7 @@ Populate this field based on the kind of visit that took place for the person. F
 Populate this field based on the kind of visit that took place for the person. For example this could be "Inpatient Visit", "Outpatient Visit", "Ambulatory Visit", etc. This table will contain standard concepts in the Visit domain. These concepts are arranged in a hierarchical structure to facilitate cohort definitions by rolling up to generally familiar Visits adopted in most healthcare systems worldwide."""@en,
         "For a Vocabulary: A Concept that represents the Vocabulary the VOCABULARY record belongs to."@en ;
     rdfs:domain [ a owl:Class ;
-            owl:unionOf ( omop:BaseVisit omop:DrugStrength omop:Exposure omop:ConditionOccurrence omop:ProcedureOccurrence omop:Vocabulary omop:Measurement omop:Observation omop:ConceptClass omop:Era omop:Cost omop:ConceptSynonym omop:Specimen omop:Metadata omop:NoteNlp omop:Domain omop:Relationship ) ] ;
+            owl:unionOf ( omop:BaseVisit omop:ConditionOccurrence omop:NoteNlp omop:ProcedureOccurrence omop:Vocabulary omop:Exposure omop:Relationship omop:ConceptClass omop:Metadata omop:Cost omop:Era omop:Domain omop:Measurement omop:Observation omop:Specimen omop:ConceptSynonym omop:DrugStrength ) ] ;
     rdfs:range omop:Concept ;
     omop:omop_cdm_name "concept_class.concept_class_concept_id#382 AS Concept"^^xsd:string,
         "concept_synonym.concept_id#395 AS Concept"^^xsd:string,

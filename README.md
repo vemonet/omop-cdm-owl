@@ -6,13 +6,13 @@ A repository to build an OWL ontology for the [Observational Medical Outcomes Pa
 
 A documentation website is built and published at **[vemonet.github.io/omop-cdm-owl](https://vemonet.github.io/omop-cdm-owl)**
 
-This project reuse and modify the script published in this publication: https://hal.science/hal-03479322/document. The original script can be found [here](https://bitbucket.org/jibalamy/owlready2/src/master/pymedtermino2/omop_cdm/import_omop_cdm.py)
+This project reuse and modify the script published in this publication: https://hal.science/hal-03479322/document. The original script can be found [here](https://bitbucket.org/jibalamy/owlready2/src/master/pymedtermino2/omop_cdm/import_omop_cdm.py). Special thanks to Jean-Baptiste Lamy who developed the original script.
 
 The script to build the ontology has been modified to add:
 
 * Labels for classes and properties
 * Change the ontology URI to https://w3id.org/omop/ontology/
-* Ontology metadata (license, label, description, preferred prefix and namespace)
+* Add metadata to the `owl:Ontology` (license, label, description, preferred prefix and namespace)
 
 ♻️ The documentation website hosted at [vemonet.github.io/omop-cdm-owl](https://vemonet.github.io/omop-cdm-owl) is automatically updated by a GitHub Action at every change to the ontology file.
 

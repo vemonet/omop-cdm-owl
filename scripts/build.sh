@@ -7,10 +7,9 @@ ONTOLOGY_FILE="omop_cdm_v6.ttl"
 rm -rf docs/
 
 # Generate docs with widoco
-# java -jar widoco.jar -ontFile $ONTOLOGY_FILE -outFolder docs -getOntologyMetadata -oops -rewriteAll -webVowl -noPlaceHolderText
-java -jar widoco.jar -ontFile $ONTOLOGY_FILE -outFolder doc -getOntologyMetadata -rewriteAll -webVowl -noPlaceHolderText
-mv doc/doc docs/
-rm -r doc
+java -jar widoco.jar -ontFile $ONTOLOGY_FILE -outFolder widoco -getOntologyMetadata -oops -rewriteAll -webVowl -noPlaceHolderText
+mv widoco/doc docs/
+rm -r widoco
 mv docs/index-en.html docs/index.html
 
 # Generate JSON-LD context
