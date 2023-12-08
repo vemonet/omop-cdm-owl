@@ -42,7 +42,7 @@ OMOP_VERSION = "6.0"
 OMOP_VERSION_MAJOR = int(float(OMOP_VERSION))
 # Path to the OMOP-CDM CSV specification file
 # You can get the CSV file from: https://github.com/OHDSI/CommonDataModel/tree/main/inst/csv
-OMOP_CDM_FIELD_CSV = f"data/OMOP_CDMv{OMOP_VERSION}_Field_Level.csv"
+OMOP_CDM_FIELD_CSV = f"https://raw.githubusercontent.com/OHDSI/CommonDataModel/main/inst/csv/OMOP_CDMv{OMOP_VERSION}_Field_Level.csv"
 OMOP_CDM_TABLE_CSV = f"https://raw.githubusercontent.com/OHDSI/CommonDataModel/main/inst/csv/OMOP_CDMv{OMOP_VERSION}_Table_Level.csv"
 
 # Path where the OMOP-CDM ontology file will be created
@@ -52,7 +52,6 @@ OMOP_ONTOLOGY_URL = "https://w3id.org/omop/ontology/"
 print(
     f"🦉 Generating OWL ontology <{OMOP_ONTOLOGY_URL}> for OMOP CDM version {OMOP_VERSION}"
 )
-
 
 # If true, split the ontology in several files, corresponding to the various part of the OMOP-CDM model (clinical, survey, etc)
 MODULAR = False
@@ -163,8 +162,7 @@ if MODULAR:
         omop_cdm_cohort,
     ]
 
-f = csv.reader(open(OMOP_CDM_FIELD_CSV))
-lignes = list(f)[1:]
+df = pd.read_csv(OMOP_CDM_FIELD_CSV)
 
 table_2_owl = {}
 field_2_owl = {}
@@ -214,7 +212,8 @@ TABLES = set(TABLES)
 prop_2_domain_2_range = defaultdict(dict)
 
 FIELDS = set()
-for table, field, *drop_it in lignes:
+for _i, row in df.iterrows():
+    field = row["cdmFieldName"]
     if field.startswith('\\"'):
         field = field[2:]
     if field.endswith('\\"'):
@@ -351,14 +350,14 @@ for (
     fkDomain,
     fkClass,
     unique_DQ_identifiers,
-) in lignes:
+) in df.itertuples(index=False):
     if table in TABLES:
         if field.startswith('\\"'):
             field = field[2:]
         if field.endswith('\\"'):
             field = field[:-2]
         description = "\n".join(
-            [i for i in [userGuidance, etlConventions] if i != "NA"]
+            [i for i in [userGuidance, etlConventions] if not pd.isna(i)]
         )
         type = type.upper()
 
@@ -371,7 +370,7 @@ for (
             if field.endswith("_concept_id"):
                 range = Concept
 
-            if fkTableName and (fkTableName != "NA"):
+            if fkTableName and not pd.isna(fkTableName):
                 if (f"{fkTableName}_ID") == fkFieldName:
                     range = table_2_owl[fkTableName.lower()]
                 else:
