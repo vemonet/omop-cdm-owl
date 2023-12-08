@@ -1,0 +1,8 @@
+.venv
+/data/
+*.jar
+/docs/
+
+.ruff_cache/
+.DS_Store
+tmp*/

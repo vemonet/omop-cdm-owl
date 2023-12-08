@@ -1,0 +1,5 @@
+owlready2
+rdflib
+ontospy
+ruff
+black
