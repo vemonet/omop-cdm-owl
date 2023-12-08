@@ -24,6 +24,7 @@ import functools
 import re
 from collections import defaultdict
 
+import pandas as pd
 from owlready2 import (
     get_ontology,
     Thing,
@@ -42,12 +43,16 @@ OMOP_VERSION_MAJOR = int(float(OMOP_VERSION))
 # Path to the OMOP-CDM CSV specification file
 # You can get the CSV file from: https://github.com/OHDSI/CommonDataModel/tree/main/inst/csv
 OMOP_CDM_FIELD_CSV = f"data/OMOP_CDMv{OMOP_VERSION}_Field_Level.csv"
+OMOP_CDM_TABLE_CSV = f"https://raw.githubusercontent.com/OHDSI/CommonDataModel/main/inst/csv/OMOP_CDMv{OMOP_VERSION}_Table_Level.csv"
 
 # Path where the OMOP-CDM ontology file will be created
 OMOP_ONTOLOGY_FILE = f"omop_cdm_v{OMOP_VERSION_MAJOR}.ttl"
 OMOP_ONTOLOGY_URL = "https://w3id.org/omop/ontology/"
 
-print(f"🦉 Generating OWL ontology <{OMOP_ONTOLOGY_URL}> for OMOP CDM version {OMOP_VERSION}")
+print(
+    f"🦉 Generating OWL ontology <{OMOP_ONTOLOGY_URL}> for OMOP CDM version {OMOP_VERSION}"
+)
+
 
 # If true, split the ontology in several files, corresponding to the various part of the OMOP-CDM model (clinical, survey, etc)
 MODULAR = False
@@ -291,6 +296,8 @@ with namespace:
         label = "OMOP CDM name"
 
 
+table_df = pd.read_csv(OMOP_CDM_TABLE_CSV)
+
 attribute_id = 0
 for nom in TABLES:
     with get_namespace(nom):
@@ -298,6 +305,13 @@ for nom in TABLES:
         cls = types.new_class(nom_owl, (OmopCDMThing,))
         cls.omop_cdm_name = nom
         cls.label = separate_words(nom.capitalize())
+        # Add table description from OMOP Table CSV
+        description = table_df.loc[
+            table_df["cdmTableName"] == nom, "tableDescription"
+        ].values
+        if description.size > 0:
+            cls.comment.en.append(description[0])
+
         table_2_owl[nom] = cls
 
         if nom.endswith("_exposure"):
@@ -376,10 +390,7 @@ for (
                         if precedent.lower() in table_2_owl:
                             range = table_2_owl[precedent.lower()]
                             break
-                        elif (
-                            f"{precedent2.lower()}_{precedent.lower()}"
-                            in table_2_owl
-                        ):
+                        elif f"{precedent2.lower()}_{precedent.lower()}" in table_2_owl:
                             range = table_2_owl[
                                 f"{precedent2.lower()}_{precedent.lower()}"
                             ]
@@ -494,7 +505,7 @@ for (
             reversed_note = ""
         if description:
             prop.comment.en.append(
-                f"{reversed_note}For a {separate_words(table_2_owl[table].name)}: {description}"
+                f"{reversed_note}For {separate_words(table_2_owl[table].name)}: {description}"
             )
 
         field_2_owl[field] = prop
@@ -628,10 +639,10 @@ for onto_subj in g.subjects(predicate=RDF.type, object=OWL.Ontology):
     )
 g.serialize(OMOP_ONTOLOGY_FILE, format="ttl")
 
-
-# vann_onto = default_world.get_ontology("http://purl.org/vocab/vann/").load()
-# vann = dcterms_onto.get_namespace("http://purl.org/vocab/vann/")
-# vann.description[omop_cdm] = ""
+# NOTE: to add dcterms:description:
+# dcterms_onto = default_world.get_ontology("http://purl.org/dc/terms/").load()
+# dcterms = dcterms_onto.get_namespace("http://purl.org/dc/terms/")
+# dcterms.description[cls] = description
 
 if MODULAR:
     omop_cdm_vocabularies.save(OMOP_ONTOLOGY_FILE.replace(".owl", "_vocabularies.owl"))
