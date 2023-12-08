@@ -8,12 +8,13 @@ rm -rf docs/
 
 # Generate docs with widoco
 java -jar widoco.jar -ontFile $ONTOLOGY_FILE -outFolder widoco -getOntologyMetadata -oops -rewriteAll -webVowl -noPlaceHolderText
+# java -jar widoco.jar -ontFile $ONTOLOGY_FILE -outFolder widoco -getOntologyMetadata -rewriteAll -webVowl -noPlaceHolderText
 mv widoco/doc docs/
 rm -r widoco
 mv docs/index-en.html docs/index.html
 
 # Generate JSON-LD context
-# java -jar owl2jsonld.jar https://raw.githubusercontent.com/vemonet/omop-cdm-owl/main/omop-cdm.owl > docs/context.jsonld
+java -jar owl2jsonld.jar https://raw.githubusercontent.com/vemonet/omop-cdm-owl/main/$ONTOLOGY_FILE > docs/context.jsonld
 
 # Generate docs with Ontospy
 mkdir -p docs/browse

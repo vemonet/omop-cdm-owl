@@ -629,6 +629,10 @@ for onto_subj in g.subjects(predicate=RDF.type, object=OWL.Ontology):
 g.serialize(OMOP_ONTOLOGY_FILE, format="ttl")
 
 
+# vann_onto = default_world.get_ontology("http://purl.org/vocab/vann/").load()
+# vann = dcterms_onto.get_namespace("http://purl.org/vocab/vann/")
+# vann.description[omop_cdm] = ""
+
 if MODULAR:
     omop_cdm_vocabularies.save(OMOP_ONTOLOGY_FILE.replace(".owl", "_vocabularies.owl"))
     omop_cdm_metadata.save(OMOP_ONTOLOGY_FILE.replace(".owl", "_metadata.owl"))
